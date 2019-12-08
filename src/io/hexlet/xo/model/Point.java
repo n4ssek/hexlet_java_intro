@@ -1,11 +1,9 @@
-public class Point {
-    // BEGIN (write your solution here)
-    int
-    // END
-    x;
+package io.hexlet.xo.model;
 
-    // BEGIN (write your solution here)
-    int
-    // END
-    y;
+public class Point {
+
+    public int x;
+
+    public int y;
+
 }
