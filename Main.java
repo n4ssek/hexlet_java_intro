@@ -1,11 +1,7 @@
-import io.hexlet.xo.model.Field;
-import io.hexlet.xo.model.Game;
-import io.hexlet.xo.model.Player;
-import io.hexlet.xo.model.Point;
-import io.hexlet.xo.view.ConsoleView;
-import io.hexlet.xo.controllers.CurrentMoveController;
-import io.hexlet.xo.controllers.WinnerController;
-import io.hexlet.xo.controllers.MoveController;
+import io.hexlet.xo.model.*;
+import io.hexlet.xo.model.exceptions.*;
+import io.hexlet.xo.view.*;
+import io.hexlet.xo.controllers.*;
 
 public class Main {
 
@@ -38,8 +34,29 @@ public class Main {
 		field.f22 = "X";
 
 		final ConsoleView cv = new ConsoleView();
+		cv.show(game);
+		cv.move(game);
+
 		final CurrentMoveController cmc = new CurrentMoveController();
+		final String currentFigure = cmc.currentMove(field);
+		if (!currentFigure.equals("X")) {
+			throw new RuntimeException(String.format("CurrentMoveController returns %s, instead of X", currentFigure));
+		}
+
 		final MoveController mc = new MoveController();
+		mc.applyFigure(field, p, "X");
+
 		final WinnerController wc = new WinnerController();
+		final String winner = wc.getWinner(field);
+		if (!winner.equals("X")) {
+			throw new RuntimeException(String.format("WinnerController returns %s, instead of X", winner));
+		}
+
+		final Exception e = new AlreadyOccupiedException();
+		final AbstractXOException e2 = new AlreadyOccupiedException();
+		final AbstractXOException e3 = new InvalidPointException();
+		final RuntimeException e4 = new XOCriticalException();
+
+        System.out.println("Test is fine");
 	}
 }
