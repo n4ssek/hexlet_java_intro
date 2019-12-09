@@ -6,57 +6,59 @@ import io.hexlet.xo.controllers.*;
 public class Main {
 
 	public static void main(String... args) {
-		final Point p = new Point();
-		p.x = 2;
-		p.y = 3;
-
-		final Player player = new Player();
-		player.name = "Slava";
-		player.figure = "X";
-
-		final Game game = new Game();
-		game.player1 = new Player();
-		game.player2 = new Player();
-		game.name = "XO";
-		game.field = new Field();
-
 		final Field field = new Field();
-		field.f00 = "X";
-		field.f01 = "X";
-		field.f02 = "X";
-
-		field.f10 = "X";
-		field.f11 = "X";
-		field.f12 = "X";
-
-		field.f20 = "X";
-		field.f21 = "X";
-		field.f22 = "X";
-
-		final ConsoleView cv = new ConsoleView();
-		cv.show(game);
-		cv.move(game);
-
 		final CurrentMoveController cmc = new CurrentMoveController();
-		final String currentFigure = cmc.currentMove(field);
-		if (!currentFigure.equals("X")) {
-			throw new RuntimeException(String.format("CurrentMoveController returns %s, instead of X", currentFigure));
+		ConsoleView print = new ConsoleView();
+
+		final Point p = new Point();
+		p.x = 1;
+		p.y = 1;
+
+		if (!cmc.currentMove(field).equals("X")){
+			throw new RuntimeException("do not returns X when the field is empty");
 		}
+		final TempTest tt = new TempTest();
 
-		final MoveController mc = new MoveController();
-		mc.applyFigure(field, p, "X");
+		for (int i = 0; i < field.getSize(); i++)
+			for (int i2 = 0; i2 < field.getSize(); i2++) {
+				p.x = i;
+				p.y = i2;
+				final String figure = (i * 3 + i2) % 2 == 0 ? "X" : "O";
+				field.setFigure(p, figure);
+				//System.out.printf("putting figure: %s to the: X:%d Y:%d\n", figure, p.x, p.y);
+				if (cmc.currentMove(field).equals(figure)){
+					throw new RuntimeException(String.format("returns %s for the field: \n%s", figure, print.show(field)));
+				}
+			}
 
-		final WinnerController wc = new WinnerController();
-		final String winner = wc.getWinner(field);
-		if (!winner.equals("X")) {
-			throw new RuntimeException(String.format("WinnerController returns %s, instead of X", winner));
-		}
+		tt.checkField(null, null, null, null, null, null, null, null, null, null);
+		// одинаковые поля блоками. Разница в заподнении по строкам или по столбцам.
+		// для понимания, что нет в этом разницы
+		tt.checkField(null, "X", "O", "X", "X", "O", "O", "O", "X", "X");
+		tt.checkField(null, "X", "X", "O", "O", "O", "X", "X", "O", "X");
 
-		final Exception e = new AlreadyOccupiedException();
-		final AbstractXOException e2 = new AlreadyOccupiedException();
-		final AbstractXOException e3 = new InvalidPointException();
-		final RuntimeException e4 = new XOCriticalException();
+		tt.checkField(null, "X", null, "X", null, "O", null, "O", null, "X");
+		tt.checkField(null, null, null, "X", null, "O", null, "X", null, "O");
 
-        System.out.println("Test is fine");
+		tt.checkField("X", "X", "X", "X", null, "O", null, "O", null, null);// или по строкам или по столбцам
+		tt.checkField("X", "X", null, "O", "X", "O", null, "X", null, null);// или по строкам или по столбцам
+
+		tt.checkField("O", "X", null, "X", "O", "O", "O", "X", null, null);
+		tt.checkField("O", "X", "O", "X", null, "O", null, "X", "O", null);
+
+		tt.checkField("X", null, "X", null, null, "X", null, null, "X", null);
+		tt.checkField("X", null, null, null, "X", "X", "X", null, null, null);
+
+		tt.checkField("O", null, null, "O", null, null, "O", null, null, "O");
+		tt.checkField("O", null, null, null, null, null, null, "O", "O", "O");
+
+		tt.checkField("O", "O", "X", "X", null, "O", null, "X", null, "O");
+		tt.checkField("O", "O", null, "X", "X", "O", null, "X", null, "O");
+
+		tt.checkField("X", "X", "O", "X", "O", "X", null, "X", null, "O");// эти две строки хорошо демонстрируют,
+		tt.checkField("X", "X", "O", "X", "O", "X", null, "X", null, "O");// что не важно какая координата будет х, а какая у
+
+		tt.checkField("O", "X", null, "O", "X", "O", "X", "O", null, "O");
+		tt.checkField("O", "X", "X", "O", null, "O", null, "O", "X", "O");
 	}
 }
