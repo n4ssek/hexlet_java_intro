@@ -1,11 +1,31 @@
 package io.hexlet.xo.controllers;
-// BEGIN (write your solution here)
+
 import io.hexlet.xo.model.*;
-// END
+
 public class CurrentMoveController {
-	// BEGIN (write your solution here)
+
 	public String currentMove(final Field  field) {
-		return "X";
-	}
-	// END
+
+		int countX = 0;
+		int countO = 0;
+
+		for (int i = 0; i < field.getSize(); i++) {
+			for (int j = 0; j < field.getSize(); j++) {
+				Point point = new Point(i, j);
+
+				if (field.getFigure(point) == "X" && field.getFigure(point) != null)
+					countX++;
+				if (field.getFigure(point) == "O" && field.getFigure(point) != null)
+					countO++;
+
+			}
+		}
+
+		if ((countX <= countO) || (countX == 0 && countO == 0)) {
+			return "X";
+		}
+
+		return "O";
+
+
 }
