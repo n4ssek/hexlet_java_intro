@@ -1,41 +1,31 @@
-// BEGIN (write your solution here)
 package io.hexlet.xo.model;
-// END
+
 
 public class Field {
 
-	public String f00;
+	private static final int FIELD_SIZE = 3;
 
-	public String f01;
+	private String[][] figures = new String[FIELD_SIZE][FIELD_SIZE];
 
-	public String f02;
 
-	public String f10;
 
-	public String f11;
-
-	public String f12;
-
-	public String f20;
-
-	public String f21;
-
-	public String f22;
-
-	// BEGIN (write your solution here)
 	public int getSize() {
-		return 3;
+
+		return this.figures.length;
+
 	}
-	// END
-	// BEGIN (write your solution here)
+
    	public String getFigure(final Point point) {
-		return null;
+
+		return this.figures[point.x][point.y];
+
 	}
-	// END
-	// BEGIN (write your solution here)
+
 	public void setFigure(final Point point,
 						final String figure) {
 
+		this.figures[point.x][point.y] = figure;
+
 	}
-	// END
+
 }
